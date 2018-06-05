@@ -14,4 +14,6 @@ defmodule Shop.Cart do
     |> Enum.sum()
     |> Kernel.*(1 - discount)
   end
+
+  defdelegate shipping(cart), to: Shop.Shipping, as: :calculate
 end
