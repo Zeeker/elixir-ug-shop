@@ -13,6 +13,23 @@ defmodule Shop.CartTest do
     end
   end
 
+  describe ".total/1" do
+    setup :empty_cart
+
+    test "with no products is 0", %{cart: cart} do
+      assert Cart.total(cart) == 0
+    end
+
+    test "with some products is the sum of the product prices", %{cart: cart} do
+      cart =
+        cart
+        |> Cart.add_product(%Product{price: 10})
+        |> Cart.add_product(%Product{price: 5})
+
+      assert Cart.total(cart) == 15
+    end
+  end
+
   defp empty_cart(_context) do
     [cart: %Cart{}]
   end
