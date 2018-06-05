@@ -1,7 +1,7 @@
 defmodule Shop.CartTest do
   use ExUnit.Case, async: true
 
-  alias Shop.{Cart, Product, User}
+  alias Shop.{Cart, Product, Customer}
 
   describe ".add_product/2" do
     setup :empty_cart
@@ -30,8 +30,8 @@ defmodule Shop.CartTest do
     end
   end
 
-  describe ".total/1 for a premium user cart" do
-    setup [:empty_cart, :add_premium_user]
+  describe ".total/1 for a premium customer cart" do
+    setup [:empty_cart, :add_premium_customer]
 
     test "with no products is still 0", %{cart: cart} do
       assert Cart.total(cart) == 0
@@ -51,9 +51,9 @@ defmodule Shop.CartTest do
     [cart: %Cart{}]
   end
 
-  defp add_premium_user(%{cart: cart}) do
-    user = %User{premium: true}
+  defp add_premium_customer(%{cart: cart}) do
+    customer = %Customer{premium: true}
 
-    [cart: %Cart{cart | user: user}]
+    [cart: %Cart{cart | customer: customer}]
   end
 end
