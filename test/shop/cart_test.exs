@@ -63,6 +63,16 @@ defmodule Shop.CartTest do
 
       assert Cart.shipping(cart) == 15
     end
+
+    test "for a premium customer does not reduce shipping", %{cart: cart} do
+      cart =
+        cart
+        |> Cart.add_product(%Product{weight: 3})
+        |> Cart.add_product(%Product{weight: 7})
+        |> Cart.add_product(%Product{weight: 5})
+
+      assert Cart.shipping(cart) == 15
+    end
   end
 
   defp empty_cart(_context) do
