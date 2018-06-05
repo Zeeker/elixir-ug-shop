@@ -75,13 +75,49 @@ defmodule Shop.CartTest do
     end
   end
 
+  describe ".total/1 with a 10% coupon and a standard customer" do
+    setup [:empty_cart, :add_standard_customer, :add_products_for_15_euros]
+
+    test "with some products reduces the total", %{cart: cart} do
+      cart = Cart.add_coupon(cart, 10)
+
+      assert Cart.total(cart) == 15 * 0.9
+    end
+  end
+
+  describe ".total/1 with a 10% coupon and a premium customer" do
+    setup [:empty_cart, :add_premium_customer, :add_products_for_15_euros]
+
+    test "with some products reduces the total but 10% and only by half of the coupon", %{
+      cart: cart
+    } do
+      cart = Cart.add_coupon(cart, 10)
+
+      assert Cart.total(cart) == 15 * 0.85
+    end
+  end
+
   defp empty_cart(_context) do
     [cart: %Cart{}]
+  end
+
+  defp add_standard_customer(%{cart: cart}) do
+    [cart: %Cart{cart | customer: %Customer{}}]
   end
 
   defp add_premium_customer(%{cart: cart}) do
     customer = %Customer{premium: true}
 
     [cart: %Cart{cart | customer: customer}]
+  end
+
+  defp add_products_for_15_euros(%{cart: cart}) do
+    cart =
+      cart
+      |> Cart.add_product(%Product{price: 3})
+      |> Cart.add_product(%Product{price: 7})
+      |> Cart.add_product(%Product{price: 5})
+
+    [cart: cart]
   end
 end
