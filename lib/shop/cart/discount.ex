@@ -1,4 +1,4 @@
-defmodule Shop.Discount do
+defmodule Shop.Cart.Discount do
   def get(%Shop.Cart{customer: customer}) do
     for_customer(customer)
   end
